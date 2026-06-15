@@ -1,0 +1,24 @@
+§
+╔═══╗ CONCEPT server_http
+│ TYPE effetto
+│ INPUT [porta: intero]
+│ OUTPUT stringa
+│ REASON "Avvia un server HTTP minimale che risponde su una porta"
+│ IMPL "http.server.HTTPServer(('', porta), handler)"
+╚═══╝
+
+╔═══╗ CONCEPT handler
+│ TYPE dato
+│ INPUT []
+│ OUTPUT callable
+│ REASON "Gestore HTTP che risponde con hello world"
+│ IMPL "lambda req: (200, [], b'Hello, world!')"
+╚═══╝
+
+╔═══╗ TRANSFORM avvia_server
+│ CAUSE [server_http, handler]
+│ EFFECT "Il server HTTP risponde sulla porta specificata"
+│ PRESERVE [porta]
+│ CONSTRAINT "porta deve essere un intero positivo tra 1024 e 65535"
+│ MAP "Creare HTTPServer con il handler e avviarlo"
+╚═══╝

@@ -32,13 +32,13 @@ class CodeGenerator:
         lines.append(f'    """{concept.reason}"""')
 
         if concept.concept_type == "operazione":
-            lines.append(f"    return {concept.impl!r}")
+            lines.append(f"    return {concept.impl}")
         elif concept.concept_type == "effetto":
-            lines.append(f"    {concept.impl!r}")
+            lines.append(f"    {concept.impl}")
         elif concept.concept_type == "dato":
-            lines.append(f"    return {concept.impl!r}")
+            lines.append(f"    return {concept.impl}")
         elif concept.concept_type == "stato":
-            lines.append(f"    return {concept.impl!r}")
+            lines.append(f"    return {concept.impl}")
 
         lines.append("")
         return "\n".join(lines)

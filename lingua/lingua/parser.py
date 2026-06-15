@@ -67,17 +67,11 @@ class Parser:
     def parse(self) -> LinguaProgram:
         program = LinguaProgram()
         while not self._is_at_end():
-            if self._check(TokenType.DELIMITER_OPEN) or self._check(TokenType.BLOCK_OPEN):
+            if self._check(TokenType.DELIMITER_OPEN):
                 self._parse_block_content(program)
                 if self._check(TokenType.DELIMITER_CLOSE):
                     self._advance()
-            else:
-                self._advance()
-        return program
-
-    def _parse_block_content(self, program: LinguaProgram):
-        while not self._check(TokenType.DELIMITER_CLOSE) and not self._is_at_end():
-            if self._check(TokenType.BLOCK_OPEN) or self._check(TokenType.DELIMITER_OPEN):
+            elif self._check(TokenType.BLOCK_OPEN):
                 node = self._parse_block()
                 if node:
                     if isinstance(node, ConceptNode):
@@ -90,9 +84,52 @@ class Parser:
                         program.patterns.append(node)
             else:
                 self._advance()
+        return program
+
+    def _peek_next(self) -> Token:
+        if self.pos + 1 < len(self.tokens):
+            return self.tokens[self.pos + 1]
+        return self.tokens[self.pos]
+
+    def _parse_block_content(self, program: LinguaProgram):
+        while not self._check(TokenType.DELIMITER_CLOSE) and not self._is_at_end():
+            if self._check(TokenType.DELIMITER_OPEN):
+                self._advance()
+                self._consume_newlines()
+            if self._check(TokenType.BLOCK_OPEN):
+                self._advance()
+                self._consume_newlines()
+                keyword = self._expect_one_of(TokenType.CONCEPT_KW, TokenType.RELATION_KW, TokenType.TRANSFORM_KW, TokenType.PATTERN_KW)
+                name = self._expect(TokenType.IDENTIFIER).value
+                self._consume_newlines()
+                if keyword.type == TokenType.CONCEPT_KW:
+                    node = self._parse_concept(name)
+                elif keyword.type == TokenType.RELATION_KW:
+                    node = self._parse_relation(name)
+                elif keyword.type == TokenType.TRANSFORM_KW:
+                    node = self._parse_transform(name)
+                elif keyword.type == TokenType.PATTERN_KW:
+                    node = self._parse_pattern(name)
+                if node:
+                    if isinstance(node, ConceptNode):
+                        program.concepts.append(node)
+                    elif isinstance(node, RelationNode):
+                        program.relations.append(node)
+                    elif isinstance(node, TransformNode):
+                        program.transforms.append(node)
+                    elif isinstance(node, PatternNode):
+                        program.patterns.append(node)
+            elif self._check(TokenType.BLOCK_CLOSE):
+                self._advance()
+                self._consume_newlines()
+            else:
+                self._advance()
+        return program
 
     def _parse_block(self):
-        if self._check(TokenType.BLOCK_OPEN) or self._check(TokenType.DELIMITER_OPEN):
+        if self._check(TokenType.BLOCK_OPEN):
+            self._advance()
+        elif self._check(TokenType.DELIMITER_OPEN):
             self._advance()
         self._consume_newlines()
         keyword = self._expect_one_of(TokenType.CONCEPT_KW, TokenType.RELATION_KW, TokenType.TRANSFORM_KW, TokenType.PATTERN_KW)
@@ -100,13 +137,15 @@ class Parser:
         self._consume_newlines()
 
         if keyword.type == TokenType.CONCEPT_KW:
-            return self._parse_concept(name)
+            node = self._parse_concept(name)
         elif keyword.type == TokenType.RELATION_KW:
-            return self._parse_relation(name)
+            node = self._parse_relation(name)
         elif keyword.type == TokenType.TRANSFORM_KW:
-            return self._parse_transform(name)
+            node = self._parse_transform(name)
         elif keyword.type == TokenType.PATTERN_KW:
-            return self._parse_pattern(name)
+            node = self._parse_pattern(name)
+
+        return node
 
     def _parse_concept(self, name: str) -> ConceptNode:
         fields = []
@@ -253,7 +292,6 @@ class Parser:
         result = []
         self._expect(TokenType.LBRACKET)
         while not self._check(TokenType.RBRACKET) and not self._is_at_end():
-            tok = self._current()
             if self._check(TokenType.STRING) or self._check(TokenType.IDENTIFIER):
                 result.append(self._advance().value)
             else:

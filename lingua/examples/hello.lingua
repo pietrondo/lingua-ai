@@ -1,0 +1,8 @@
+§
+╔═══╗ CONCEPT hello
+│ TYPE operazione
+│ INPUT []
+│ OUTPUT stringa
+│ REASON "Genera un messaggio di saluto in inglese"
+│ IMPL "Hello, world!"
+╚═══╝
