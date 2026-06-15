@@ -1,0 +1,8 @@
+§
+╔═══╗ CONCEPT saluto
+│ TYPE operazione
+│ INPUT []
+│ OUTPUT stringa
+│ REASON "Genera un messaggio di saluto in italiano"
+│ IMPL "Ciao, mondo!"
+╚═══╝

@@ -1,0 +1,37 @@
+File len: 1026
+First 200 chars:
+'§\n╔═══╗ CONCEPT saluto\n│ TYPE operazione\n│ INPUT []\n│ OUTPUT stringa\n│ REASON "Genera un messaggio di saluto in italiano"\n│ IMPL "Ciao, mondo!"\n╚═══╝\n\n╔═══╗ CONCEPT nome_completo\n│ TYPE operazione\n│ I'
+
+Box chars in first 200:
+  [0] '§' ord=00a7
+  [2] '╔' ord=2554
+  [3] '═' ord=2550
+  [4] '═' ord=2550
+  [5] '═' ord=2550
+  [6] '╗' ord=2557
+  [23] '│' ord=2502
+  [41] '│' ord=2502
+  [52] '│' ord=2502
+  [69] '│' ord=2502
+  [122] '│' ord=2502
+  [144] '╚' ord=255a
+  [145] '═' ord=2550
+  [146] '═' ord=2550
+  [147] '═' ord=2550
+  [148] '╝' ord=255d
+  [151] '╔' ord=2554
+  [152] '═' ord=2550
+  [153] '═' ord=2550
+  [154] '═' ord=2550
+  [155] '╗' ord=2557
+  [179] '│' ord=2502
+  [197] '│' ord=2502
+
+Lexer test:
+Error: LexerError: Lexer error at line 15, column 28: Unexpected character: '\\'
+Traceback (most recent call last):
+  File "C:\Users\pietr\progetti\language-ai\lingua\dbg5.py", line 21, in <module>
+    tokens = l.tokenize()
+  File "C:\Users\pietr\progetti\language-ai\lingua\lingua\lexer.py", line 211, in tokenize
+    raise LexerError(f"Unexpected character: {char!r}", self.line, self.column)
+lingua.lexer.LexerError: Lexer error at line 15, column 28: Unexpected character: '\\'

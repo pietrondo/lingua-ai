@@ -1,0 +1,5 @@
+pos=0 char='╔' ord=9556
+pos=1 char='═' ord=9552
+pos=2 char='═' ord=9552
+pos=3 char='═' ord=9552
+pos=4 char='╗' ord=9559

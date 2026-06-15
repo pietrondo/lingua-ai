@@ -1,0 +1,8 @@
+SUCCESS: concepts=3, relations=1, transforms=1, patterns=1
+
+Concept 0: ConceptNode(name='saluto', concept_type='operazione', input_types=[], output_type='stringa', reason='Genera un messaggio di saluto in italiano', impl='Ciao, mondo!', fields=None)
+Concept 1: ConceptNode(name='nome_completo', concept_type='operazione', input_types=[('nome', 'stringa'), ('cognome', 'stringa')], output_type='stringa', reason='Costruisce un nome completo da nome e cognome', impl='f"{nome} {cognome}"', fields=None)
+Concept 2: ConceptNode(name='eta_minima', concept_type='dato', input_types=[], output_type='numero', reason="L'eta minima per accedere al servizio", impl='18', fields=None)
+Relation 0: RelationNode(name='usa_saluto', from_concept='nome_completo', to_concept='saluto', relation_type='composizione', reason='Il saluto usa il nome completo per personalizzare il messaggio')
+Transform 0: TransformNode(name='valuta_eta', cause=['eta'], effect='accesso_concesso', preserve=['eta'], constraint="L'eta deve essere >= eta_minima", map='eta >= int(eta_minima)')
+Pattern 0: PatternNode(name='ciclo_dipendenza', evidence='Due concetti si riferiscono reciprocamente senza progresso', context=['dipendenza_ciclica', 'nessun_termine'], resolve='Introdurre un terzo concetto che rompa il ciclo')

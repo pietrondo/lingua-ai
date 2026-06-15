@@ -1,0 +1,7 @@
+len=5
+pat_len=5
+s.startswith(pat)=True
+s[0:1]='╔', isalpha=False
+source[0:5]='╔═══╗'
+source[0:5].startswith(pat)=True
+at pos=0: source.startswith(pat)=True
